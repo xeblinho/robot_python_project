@@ -1,12 +1,14 @@
 import mariadb
 
 class Databases(object,db_name):
+	# Konstruktor, przypisuje pola
 	def __inti__(self):
 		self.x = [0.0]
 		self.y = [0.0]
 		self.z = [0.0]
 	def __del__(self):
-		
+	
+	# Otwieranie połączenia z bazą danych
 	def connect(self):
 		try:
 			conn = mariadb.connect(
@@ -23,6 +25,7 @@ class Databases(object,db_name):
 			print(f"Error connecting to MariaDB Platform: {e}")
 			sys.exit(1)
 		
+		# Zapisywanie punktów odebranych od DSO, prefix: pc=chmura punktów, tr=trajektoria
 		def write_points(self, arg_prefix, x, y, z):
 			try:
 				self.arg1_name = arg_prefix + "x"

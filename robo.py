@@ -1,3 +1,4 @@
+#Import potrzebnych bibliotek i modułów
 import sys
 
 import socket
@@ -9,27 +10,33 @@ from camera import Camera as cam
 
 
 class Robo(object):
+	# Funkcja inicjalizująca, wywoływana samoczynnie przy tworzeniu projektu
 	def __init__(self, camFlag, dsoFlag, dbpcFlag, dbtagFlag):
-		self.camFlag = camFlag
+		self.camFlag = camFlag # Flagi określające, które moduły mają się zainicjalizować
 		self.dsoFlag = dsoFlag
 		self.dbpcFlag = dbpcFlag
 		self.dbtagFlag = dbtagFlag
 	
+	# Funkcja tworząca połączenie zmq z maszyną nadrzędną na wybranym porcie
 	def establish_zmq(self,port):	
 		self.zmqContext = zmq.Context()
 		self.zmqSocket = zmqContext.socket(zmq.SUB)
 		self.zmqSocket = connect('tcp://192.168.1.1:' + str(port))
 		self.zmqSocket.setsockopt(zmq.SUBSCRIBE, "")
+		self.set_id()
 		
+	# Wysłanie do maszyny nadrzędnej identyfikatora, który jest ostatnim oktetem adresu IP
 	def	set_id(self):
 		self.ip = self.extract_ip()
 		self.id = self.ip.split(".")
 		self.id = np.array(self.id)
 		zmqSocket.send("roboID %d" % (self.id))
 		
+	# Destruktor
 	def __del__(self):
 		#zamknięcie połączeń, zamknięcie procesów
 		
+	# Odczytanie własnego adresu IP
 	def extract_ip(self):
 		st = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		try:       
@@ -41,6 +48,7 @@ class Robo(object):
 			st.close()
 		return IP
 	
+	# Inicjalizacja wybranych systemów
 	def initialization(self):
 		
 		while 1:
